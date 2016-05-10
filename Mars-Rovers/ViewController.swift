@@ -66,7 +66,12 @@ class ViewController: UIViewController {
                         
                         let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlContent, options: NSJSONReadingOptions.MutableContainers)
                         
-                        print(jsonResult["photos"])
+                        if let objects = jsonResult["photos"]!{
+                            for i in 0..<objects.count{
+                                print(i)
+                                print(objects[i])
+                            }
+                        }
                         
                     } catch {
                         print("JSON serialization failed")
