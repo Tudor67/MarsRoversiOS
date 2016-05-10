@@ -50,6 +50,35 @@ class ViewController: UIViewController {
             
             print("Button pressed")
             
+            //super.viewDidLoad()
+            
+            let earth_date = "2016-4-23"
+            
+            let api_key = "NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo"
+            
+            let url = NSURL(string: "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=\(earth_date)&api_key=\(api_key)")!
+            
+            let task = NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) -> Void in
+                
+                if let urlContent = data {
+                    
+                    do {
+                        
+                        let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlContent, options: NSJSONReadingOptions.MutableContainers)
+                        
+                        print(jsonResult["photos"])
+                        
+                    } catch {
+                        print("JSON serialization failed")
+                        
+                    }
+                    
+                }
+                
+                
+            }
+            
+            task.resume()
         }
         
     }
@@ -63,9 +92,5 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
         
     }
-    
-    
-    
-    
     
 }
