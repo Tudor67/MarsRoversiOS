@@ -31,9 +31,15 @@ class ViewController: UIViewController {
         
         super.viewDidLoad()
         
+        addButtonAndTextField()
+    }
+    
+    
+    
+    func addButtonAndTextField(){
         textField.frame = CGRectMake(txtX, txtY, txtWidth, txtHeight)
         textField.backgroundColor = UIColor.whiteColor()
-        textField.text = "Enter a earth_date"
+        textField.placeholder = "Enter a earth_date"
         textField.borderStyle = UITextBorderStyle.Line
         
         self.view.addSubview(textField)
@@ -55,9 +61,15 @@ class ViewController: UIViewController {
         
         if btnsendtag.tag == 1 {
             
+            for view in self.view.subviews {
+                view.removeFromSuperview()
+            }
+            
+            addButtonAndTextField()
+            
             print("Button pressed")
             
-            let earth_date = "2016-4-23"
+            let earth_date = textField.text!//"2016-4-23"
             let api_key = "NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo"
             let url = NSURL(string: "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=\(earth_date)&api_key=\(api_key)")!
             
@@ -93,9 +105,9 @@ class ViewController: UIViewController {
                                         
                                         
                                         imageView.image = UIImage(data: data!)
-                                        imageView.frame = CGRect(x: 0, y: CGFloat(i+1) * blockHeight - photoHeight, width: photoWidth, height: photoHeight)
+                                        imageView.frame = CGRect(x: 10, y: CGFloat(i+1) * blockHeight - photoHeight, width: photoWidth, height: photoHeight)
                                         
-                                        let label = UILabel(frame: CGRectMake(0, 0, labelWidth, labelHeight))
+                                        let label = UILabel(frame: CGRectMake(10, 0, labelWidth, labelHeight))
                                         label.center = CGPointMake(labelWidth/2, CGFloat(i+1) * blockHeight + labelHeight/2)
                                         let photoId = objects[i]["id"] as! Int
                                         let labelText = "PhotoId = \(photoId)"
