@@ -67,7 +67,7 @@ class ViewController: UIViewController {
             
             addButtonAndTextField()
             
-            print("Button pressed")
+            //print("Button pressed")
             
             let earth_date = textField.text!//"2016-4-23"
             let api_key = "NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo"
@@ -84,9 +84,6 @@ class ViewController: UIViewController {
                         if let objects = jsonResult["photos"]!{
                             
                             for i in 0..<objects.count{
-                                //print(i)
-                                //print(objects[i])
-                                
                                 let urlString = objects[i]["img_src"] as! String
                                 
                                 let imageView =  UIImageView()
@@ -102,15 +99,15 @@ class ViewController: UIViewController {
                                         let labelWidth: CGFloat = 200
                                         let labelHeight: CGFloat = 40
                                         let blockHeight = photoHeight + photoHeight
-                                        
+                                        let lineNrOfPh = 3
                                         
                                         imageView.image = UIImage(data: data!)
-                                        imageView.frame = CGRect(x: 10, y: CGFloat(i+1) * blockHeight - photoHeight, width: photoWidth, height: photoHeight)
+                                        imageView.frame = CGRect(x: CGFloat(10 + ((i)%lineNrOfPh)*(Int(photoWidth) + 41)), y: CGFloat((i)/lineNrOfPh + 1) * blockHeight - photoHeight, width: photoWidth, height: photoHeight)
                                         
-                                        let label = UILabel(frame: CGRectMake(10, 0, labelWidth, labelHeight))
-                                        label.center = CGPointMake(labelWidth/2, CGFloat(i+1) * blockHeight + labelHeight/2)
+                                        let label = UILabel(frame: CGRectMake(0, 0, labelWidth, labelHeight))
+                                        label.center = CGPointMake(labelWidth/2 + CGFloat(((i)%lineNrOfPh)*(Int(photoWidth) + 41)), CGFloat((i)/lineNrOfPh + 1) * blockHeight + labelHeight/2)
                                         let photoId = objects[i]["id"] as! Int
-                                        let labelText = "PhotoId = \(photoId)"
+                                        let labelText = "PhotoId:\(photoId)"
                                         label.text = labelText
                                         
                                         self.view.addSubview(label)
@@ -131,7 +128,7 @@ class ViewController: UIViewController {
                 
             }
             task.resume()
-        }   
+        }
     }
     
     
