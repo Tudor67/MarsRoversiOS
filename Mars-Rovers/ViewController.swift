@@ -13,11 +13,8 @@ class ViewController: UIViewController {
     
     
     let btnX: CGFloat = 230
-    
     let btnY: CGFloat = 40
-    
     let btnWidth: CGFloat = 170
-    
     let btnHeight: CGFloat = 35
     
     
@@ -28,12 +25,9 @@ class ViewController: UIViewController {
         
         let button:UIButton = UIButton(frame: CGRectMake(btnX, btnY, btnWidth, btnHeight))
         
-        button.backgroundColor = UIColor.greenColor()
-        
+        button.backgroundColor = UIColor.blackColor()
         button.setTitle("Load Images", forState: UIControlState.Normal)
-        
         button.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
-        
         button.tag = 1;
         
         self.view.addSubview(button)
@@ -50,12 +44,8 @@ class ViewController: UIViewController {
             
             print("Button pressed")
             
-            //super.viewDidLoad()
-            
             let earth_date = "2016-4-23"
-            
             let api_key = "NNKOjkoul8n1CH18TWA9gwngW1s1SmjESPjNoUFo"
-            
             let url = NSURL(string: "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=\(earth_date)&api_key=\(api_key)")!
             
             let task = NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) -> Void in
@@ -67,27 +57,57 @@ class ViewController: UIViewController {
                         let jsonResult = try NSJSONSerialization.JSONObjectWithData(urlContent, options: NSJSONReadingOptions.MutableContainers)
                         
                         if let objects = jsonResult["photos"]!{
+                            
                             for i in 0..<objects.count{
-                                print(i)
-                                print(objects[i])
+                                //print(i)
+                                //print(objects[i])
+                                
+                                let urlString = objects[i]["img_src"] as! String
+                                
+                                let imageView =  UIImageView()
+                                let urlObj = NSURL(string: urlString)
+                                
+                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                                    let data = NSData(contentsOfURL: urlObj!)
+                                    dispatch_async(dispatch_get_main_queue(), {
+                                        
+                                        
+                                        let photoWidth: CGFloat = 100
+                                        let photoHeight: CGFloat = 100
+                                        let labelWidth: CGFloat = 200
+                                        let labelHeight: CGFloat = 40
+                                        let blockHeight = photoHeight + photoHeight
+                                        
+                                        
+                                        imageView.image = UIImage(data: data!)
+                                        imageView.frame = CGRect(x: 0, y: CGFloat(i+1) * blockHeight - photoHeight, width: photoWidth, height: photoHeight)
+                                        
+                                        let label = UILabel(frame: CGRectMake(0, 0, labelWidth, labelHeight))
+                                        label.center = CGPointMake(labelWidth/2, CGFloat(i+1) * blockHeight + labelHeight/2)
+                                        let photoId = objects[i]["id"] as! Int
+                                        let labelText = "PhotoId = \(photoId)"
+                                        label.text = labelText
+                                        
+                                        self.view.addSubview(label)
+                                        self.view.addSubview(imageView)
+                                    });
+                                    
+                                    
+                                }
                             }
+                            
                         }
                         
                     } catch {
                         print("JSON serialization failed")
-                        
                     }
                     
                 }
                 
-                
             }
-            
             task.resume()
-        }
-        
+        }   
     }
-    
     
     
     override func didReceiveMemoryWarning() {
