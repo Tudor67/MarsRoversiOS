@@ -22,28 +22,29 @@ class ViewController: UIViewController {
     let txtWidth: CGFloat = 170
     let txtHeight: CGFloat = 35
     
+    let button:UIButton = UIButton()
+    let textField: UITextField = UITextField()
+    
+    
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
-        let textField: UITextField = UITextField(frame: CGRectMake(txtX, txtY, txtWidth, txtHeight))
+        textField.frame = CGRectMake(txtX, txtY, txtWidth, txtHeight)
         textField.backgroundColor = UIColor.whiteColor()
         textField.text = "Enter a earth_date"
         textField.borderStyle = UITextBorderStyle.Line
+        
         self.view.addSubview(textField)
         
-        
-        let button:UIButton = UIButton(frame: CGRectMake(btnX, btnY, btnWidth, btnHeight))
-        
+        button.frame = CGRectMake(btnX, btnY, btnWidth, btnHeight)
         button.backgroundColor = UIColor.blackColor()
         button.setTitle("Load Images", forState: UIControlState.Normal)
         button.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         button.tag = 1;
         
         self.view.addSubview(button)
-        
-        
-        
     }
     
     
